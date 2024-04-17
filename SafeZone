@@ -1,0 +1,38 @@
+
+local undergroundSize = Vector3.new(100, 2, 100) -- Adjust the dimensions as needed
+local undergroundDepth = 111 -- How deep underground the platform will be
+
+-- Create a part to represent the underground platform
+local undergroundPart = Instance.new("Part")
+undergroundPart.Size = undergroundSize
+undergroundPart.Position = Vector3.new(0, -undergroundDepth, 0) -- Position deeper underground
+undergroundPart.Anchored = true
+undergroundPart.CanCollide = true
+undergroundPart.BrickColor = BrickColor.new("Medium stone grey")
+undergroundPart.Parent = game.Workspace -- Place the part in the game world
+
+-- Function to teleport players onto the underground platform
+local function teleportToUnderground(player)
+    local teleportPosition = undergroundPart.Position + Vector3.new(0, undergroundSize.Y/2, 0) -- Teleport onto the platform
+    player.Character:SetPrimaryPartCFrame(CFrame.new(teleportPosition))
+end
+
+-- Connect the teleport function to player events (e.g., touching a part)
+undergroundPart.Touched:Connect(function(hit)
+    local character = hit.Parent
+    local humanoid = character:FindFirstChild("Humanoid")
+    if humanoid then
+        teleportToUnderground(character.Parent)
+    end
+end
+
+
+-- Teleport existing players onto the platform when the script runs
+for _, player in ipairs(game.Players:GetPlayers()) do
+    if player.Character then
+        teleportToUnderground(player)
+    end
+end   
+    
+     )}
+    
